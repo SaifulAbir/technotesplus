@@ -8,12 +8,14 @@ import {
     NOTE,
 } from "./paths";
 import Login from "../pages/Login";
+import Signup from "../pages/Signup";
 
 class Routes extends Component {
   render() {
     return (
       <Switch>
         <Route exact path={LOGIN} component={Login} />
+        <Route exact path={SIGNUP} component={Signup} />
       </Switch>
     );
   }

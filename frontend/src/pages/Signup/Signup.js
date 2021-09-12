@@ -13,9 +13,11 @@ import { Form } from "../../components/Form/Form";
 import { api } from "../../configs/configs";
 
 
-var loginValues = {
+var signupValues = {
     username: "",
-    password: ""
+    password: "",
+    email: "",
+    confirmPassword: ""
 }
 
 const useStyles = makeStyles(theme => ({
@@ -56,21 +58,20 @@ const Login = (props) => {
     const classes = useStyles();
     var [error, setError] = useState(null);
 
-    const LoginFormik = useFormik({
-        initialValues: loginValues,
+    const signupFormik = useFormik({
+        initialValues: signupValues,
         onSubmit: (values, { setSubmitting }) => {
             setSubmitting(true);
-            login(values);
+            signup(values);
         },
     });
 
-    const login = async (values) => {
+    const signup = async (values) => {
 
         try {
-            await api.post("/api/token/", values)
+            await api.post("/api/signup/", values)
                 .then((res) => {
-                    localStorage.setItem('access_token', res.data.refresh)
-                    props.history.push('/notes')
+                    props.history.push('/')
                 })
                 .catch((err) => {
                     setError(true);
@@ -88,14 +89,14 @@ const Login = (props) => {
                         Tech Notes Plus
                     </Typography>
                     <Typography variant="h5" className={classes.greeting}>
-                        Login Here
+                        Signup Here
                     </Typography>
                     <Fade in={error}>
                         <Typography color="secondary" className={classes.errorMessage}>
-                            Something is wrong with your username or password
+                            Something wrong is occurred
                         </Typography>
                     </Fade>
-                    <Form onSubmit={LoginFormik.handleSubmit}>
+                    <Form onSubmit={signupFormik.handleSubmit}>
                         <Grid container justifyContent="space-between" alignItems="flex-start" spacing={0}>
                             <Grid item md={12} sm={12} xs={12}>
                                 <TextField
@@ -107,13 +108,33 @@ const Login = (props) => {
                                             input: classes.textField,
                                         },
                                     }}
-                                    value={LoginFormik.values.username}
-                                    onChange={LoginFormik.handleChange}
-                                    onBlur={LoginFormik.handleBlur}
+                                    value={signupFormik.values.username}
+                                    onChange={signupFormik.handleChange}
+                                    onBlur={signupFormik.handleBlur}
                                     margin="normal"
                                     type="text"
-                                    error={LoginFormik.touched.username && Boolean(LoginFormik.errors.username)}
-                                    helperText={LoginFormik.touched.username && LoginFormik.errors.username}
+                                    error={signupFormik.touched.username && Boolean(signupFormik.errors.username)}
+                                    helperText={signupFormik.touched.username && signupFormik.errors.username}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item md={12} sm={12} xs={12}>
+                                <TextField
+                                    label="Email"
+                                    name="email"
+                                    InputProps={{
+                                        classes: {
+                                            underline: classes.textFieldUnderline,
+                                            input: classes.textField,
+                                        },
+                                    }}
+                                    value={signupFormik.values.email}
+                                    onChange={signupFormik.handleChange}
+                                    onBlur={signupFormik.handleBlur}
+                                    margin="normal"
+                                    type="text"
+                                    error={signupFormik.touched.email && Boolean(signupFormik.errors.email)}
+                                    helperText={signupFormik.touched.email && signupFormik.errors.email}
                                     fullWidth
                                 />
                             </Grid>
@@ -128,9 +149,28 @@ const Login = (props) => {
                                             input: classes.textField,
                                         },
                                     }}
-                                    value={LoginFormik.values.password}
-                                    onChange={LoginFormik.handleChange}
-                                    onBlur={LoginFormik.handleBlur}
+                                    value={signupFormik.values.password}
+                                    onChange={signupFormik.handleChange}
+                                    onBlur={signupFormik.handleBlur}
+                                    margin="normal"
+                                    type="password"
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item md={12} sm={12} xs={12}>
+                                <TextField
+                                    label="Confirm Password"
+                                    name="confirmPassword"
+                                    id="confirmPassword"
+                                    InputProps={{
+                                        classes: {
+                                            underline: classes.textFieldUnderline,
+                                            input: classes.textField,
+                                        },
+                                    }}
+                                    value={signupFormik.values.confirmPassword}
+                                    onChange={signupFormik.handleChange}
+                                    onBlur={signupFormik.handleBlur}
                                     margin="normal"
                                     type="password"
                                     fullWidth
@@ -138,14 +178,14 @@ const Login = (props) => {
                             </Grid>
                             <Grid item md={12} sm={12} xs={12}>
                                 <div className={classes.formButtons}>
-                                    <Link to="/signup">
-                                        <Button style={{justifyContent: 'center'}}
-                                                variant={"contained"}
-                                                size={"large"}
-                                                color={"primary"}
-                                                classes={{ root: classes.root, label: classes.label }}>
-                                            Signup
-                                        </Button>
+                                    <Link to="/">
+                                    <Button style={{justifyContent: 'center'}}
+                                            variant={"contained"}
+                                            size={"large"}
+                                            color={"primary"}
+                                            classes={{ root: classes.root, label: classes.label }}>
+                                        Login
+                                    </Button>
                                     </Link>
                                     <Button style={{justifyContent: 'center'}}
                                             variant={"contained"}
@@ -153,10 +193,11 @@ const Login = (props) => {
                                             color={"primary"}
                                             type="submit"
                                             disabled={
-                                                LoginFormik.isSubmitting, LoginFormik.values.username.length === 0 || LoginFormik.values.password.length === 0
+                                                signupFormik.isSubmitting, signupFormik.values.username.length === 0 || signupFormik.values.password.length === 0
+                                                || signupFormik.values.email.length === 0 || signupFormik.values.confirmPassword.length === 0
                                             }
                                             classes={{ root: classes.root, label: classes.label }}>
-                                        Login
+                                        Signup
                                     </Button>
                                 </div>
                             </Grid>
