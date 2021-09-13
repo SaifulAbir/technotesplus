@@ -7,13 +7,15 @@ import {
     SIGNUP,
     NOTE,
     PROFILE,
-    UPDATEPROFILE
+    UPDATEPROFILE,
+    CHANGEPASSWORD
 } from "./paths";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Note from "../pages/Note";
 import Profile from "../pages/Profile";
 import UpdateProfile from "../pages/UpdateProfile/UpdateProfile";
+import ChangePassword from "../pages/ChangePassword/ChangePassword";
 
 class Routes extends Component {
     render() {
@@ -24,6 +26,7 @@ class Routes extends Component {
                 <ProtectedRoute exact path={NOTE} component={Note} />
                 <ProtectedRoute exact path={PROFILE} component={Profile} />
                 <ProtectedRoute exact path={UPDATEPROFILE} component={UpdateProfile} />
+                <ProtectedRoute exact path={CHANGEPASSWORD} component={ChangePassword} />
             </Switch>
         );
     }

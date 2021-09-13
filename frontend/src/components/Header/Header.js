@@ -46,6 +46,18 @@ export default function Header(props) {
     history.push("/");
   };
 
+  const profile = (history) => {
+    setAnchorEl(null);
+    history.push("/profile");
+  };
+
+  const changePassword = (history) => {
+    setAnchorEl(null);
+    history.push("/change-password");
+  };
+
+
+
   return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -81,8 +93,8 @@ export default function Header(props) {
                       open={open}
                       onClose={handleClose}
                   >
-                    <MenuItem component='a' href='/profile' onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>Change Password</MenuItem>
+                    <MenuItem onClick={() => profile(props.history)}>Profile</MenuItem>
+                    <MenuItem onClick={() => changePassword(props.history)}>Change Password</MenuItem>
                     <MenuItem onClick={handleClose}>
                       <Typography
                           className={classes.profileMenuLink}
