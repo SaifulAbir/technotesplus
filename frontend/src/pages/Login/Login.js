@@ -69,7 +69,7 @@ const Login = (props) => {
         try {
             await api.post("/api/token/", values)
                 .then((res) => {
-                    localStorage.setItem('access_token', res.data.refresh)
+                    localStorage.setItem('access_token', res.data.access)
                     props.history.push('/notes')
                 })
                 .catch((err) => {
