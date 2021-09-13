@@ -1,10 +1,9 @@
 from django.urls import path
-from notes.api import NoteListAPI
+from notes.api import NoteListAPI, TagListAPI, NoteCreateAPI
 
 urlpatterns = [
     path('note-list/', NoteListAPI.as_view(), name='note_list'),
-    path('signup/', UserCreateAPI.as_view(), name='create_user'),
-    path('profile/', UserProfileAPI.as_view(), name='user_profile'),
-    path('update_profile/', UserUpdateAPI.as_view(), name='user_update'),
-    path('change_password/', change_password, name='change_password'),
+    path('tag-list/', TagListAPI.as_view(), name='tag_list'),
+    path('create-note/', NoteCreateAPI.as_view(), name='create-note'),
+    # path('update-note/', UserUpdateAPI.as_view(), name='update-note')
 ]
