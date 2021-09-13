@@ -8,7 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import {Link} from "@material-ui/core";
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,47 +65,51 @@ export default function Header(props) {
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
             </IconButton>
+
             <Typography variant="h6" className={classes.title}>
-              Tech Notes Plus
+              <Link to="/notes" style={{ textDecoration: 'none', color: 'unset' }}>
+                Tech Notes Plus
+              </Link>
             </Typography>
-                <div>
-                  <IconButton
-                      aria-label="account of current user"
-                      aria-controls="menu-appbar"
-                      aria-haspopup="true"
-                      onClick={handleMenu}
-                      color="inherit"
+
+            <div>
+              <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                  onClose={handleClose}
+              >
+                <MenuItem onClick={() => profile(props.history)}>Profile</MenuItem>
+                <MenuItem onClick={() => changePassword(props.history)}>Change Password</MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Typography
+                      className={classes.profileMenuLink}
+                      color="primary"
+                      onClick={() => signOut(props.history)}
                   >
-                    <AccountCircle />
-                  </IconButton>
-                  <Menu
-                      id="menu-appbar"
-                      anchorEl={anchorEl}
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                      }}
-                      keepMounted
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                      }}
-                      open={open}
-                      onClose={handleClose}
-                  >
-                    <MenuItem onClick={() => profile(props.history)}>Profile</MenuItem>
-                    <MenuItem onClick={() => changePassword(props.history)}>Change Password</MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <Typography
-                          className={classes.profileMenuLink}
-                          color="primary"
-                          onClick={() => signOut(props.history)}
-                      >
-                        Sign Out
-                      </Typography>
-                    </MenuItem>
-                  </Menu>
-                </div>
+                    Sign Out
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            </div>
           </Toolbar>
         </AppBar>
       </div>
