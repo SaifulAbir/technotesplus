@@ -1,0 +1,57 @@
+from django.contrib.auth.models import User
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
+# Create your models here.
+
+
+class Note(models.Model):
+    text = models.TextField(_('Text'), max_length=500, null=False, blank=False)
+    is_archived = models.BooleanField(_('Archived'), null=True, blank=True, default=True)
+    created_by = models.ForeignKey(
+            User,
+            on_delete=models.SET_NULL,
+            null=True, blank=True,
+            verbose_name='Created by'
+        )
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated'), auto_now=True)
+
+    def __str__(self):
+        return self.text
+
+
+class Tag(models.Model):
+    name = models.CharField(_('Name'), max_length=255, null=False, blank=False)
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
+class NoteTag(models.Model):
+    """
+        tag: one to many relation
+    """
+    tag = models.ForeignKey(
+        Tag, related_name='tag_note',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        verbose_name='Tag'
+    )
+    note = models.ForeignKey(
+        Note, related_name='note_tag',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        verbose_name='Note'
+    )
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        verbose_name='Created by'
+    )
+    created_at = models.DateTimeField(_('Created'), auto_now_add=True)
+
+    def __str__(self):
+        return self.tag.name
