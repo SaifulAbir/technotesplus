@@ -6,12 +6,14 @@ import {
     LOGIN,
     SIGNUP,
     NOTE,
-    PROFILE
+    PROFILE,
+    UPDATEPROFILE
 } from "./paths";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Note from "../pages/Note";
 import Profile from "../pages/Profile";
+import UpdateProfile from "../pages/UpdateProfile/UpdateProfile";
 
 class Routes extends Component {
     render() {
@@ -21,6 +23,7 @@ class Routes extends Component {
                 <Route exact path={SIGNUP} component={Signup} />
                 <ProtectedRoute exact path={NOTE} component={Note} />
                 <ProtectedRoute exact path={PROFILE} component={Profile} />
+                <ProtectedRoute exact path={UPDATEPROFILE} component={UpdateProfile} />
             </Switch>
         );
     }

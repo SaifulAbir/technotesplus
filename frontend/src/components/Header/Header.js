@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import {Link} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,7 +81,7 @@ export default function Header(props) {
                       open={open}
                       onClose={handleClose}
                   >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    <MenuItem component='a' href='/profile' onClick={handleClose}>Profile</MenuItem>
                     <MenuItem onClick={handleClose}>Change Password</MenuItem>
                     <MenuItem onClick={handleClose}>
                       <Typography
