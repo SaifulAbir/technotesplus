@@ -1,6 +1,6 @@
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
 from notes.models import Note, Tag
-from notes.serializers import NoteSerializer, NoteCreateSerializer, TagSerializer
+from notes.serializers import NoteSerializer, NoteCreateUpdateSerializer, TagSerializer
 
 
 class NoteListAPI(ListAPIView):
@@ -11,7 +11,12 @@ class NoteListAPI(ListAPIView):
 
 
 class NoteCreateAPI(CreateAPIView):
-    serializer_class = NoteCreateSerializer
+    serializer_class = NoteCreateUpdateSerializer
+
+
+class NoteUpdateAPI(UpdateAPIView):
+    queryset = Note.objects.all()
+    serializer_class = NoteCreateUpdateSerializer
 
 
 class TagListAPI(ListAPIView):

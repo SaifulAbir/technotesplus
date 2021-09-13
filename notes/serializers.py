@@ -23,7 +23,7 @@ class NoteSerializer(ModelSerializer):
         fields = ['text', 'note_tag']
 
 
-class NoteCreateSerializer(ModelSerializer):
+class NoteCreateUpdateSerializer(ModelSerializer):
     tags = serializers.ListField(child=serializers.CharField(), write_only=True)
 
     class Meta:
@@ -32,8 +32,6 @@ class NoteCreateSerializer(ModelSerializer):
 
     def create(self, validated_data):
         tags = validated_data.pop('tags')
-        print(tags)
-        print(validated_data)
         note_instance = Note.objects.create(**validated_data, created_by=self.context['request'].user)
         if tags:
             for tag in tags:
@@ -45,3 +43,17 @@ class NoteCreateSerializer(ModelSerializer):
                     NoteTag.objects.create(tag=tag_obj, note=note_instance,
                                            created_by=self.context['request'].user)
         return note_instance
+
+    def update(self, instance, validated_data):
+        NoteTag.objects.filter(created_by=instance.created_by, note=instance ).delete()
+        tags = validated_data.pop('tags')
+        if tags:
+            for tag in tags:
+                tag_obj_exist = Tag.objects.filter(name=tag).exists()
+                if tag_obj_exist:
+                    NoteTag.objects.create(tag=Tag.objects.get(name=tag), note=instance, created_by=self.context['request'].user)
+                if not tag_obj_exist:
+                    tag_obj = Tag.objects.create(name=tag)
+                    NoteTag.objects.create(tag=tag_obj, note=instance,
+                                           created_by=self.context['request'].user)
+        return super().update(instance, validated_data)
