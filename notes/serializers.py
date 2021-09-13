@@ -18,9 +18,10 @@ class TagSerializer(ModelSerializer):
 
 class NoteSerializer(ModelSerializer):
     note_tag = NoteTagSerializer(many=True)
+    created_by = serializers.CharField(source='created_by.username')
     class Meta:
         model = Note
-        fields = ['text', 'note_tag']
+        fields = ['id', 'text', 'note_tag', 'created_at', 'created_by']
 
 
 class NoteCreateUpdateDeleteSerializer(ModelSerializer):
