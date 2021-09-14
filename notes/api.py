@@ -10,8 +10,8 @@ class NoteSearchAPI(ListAPIView):
 
     def get_queryset(self):
         request = self.request
+        print(request.user)
         tag = request.GET.get('tag')
-        print(self.request.user)
         queryset = Note.objects.prefetch_related('note_tag').filter(is_archived=False, created_by=self.request.user)
         if tag:
             queryset = queryset.filter(note_tag__tag__name=tag)

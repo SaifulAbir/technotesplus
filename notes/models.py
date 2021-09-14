@@ -2,8 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-# Create your models here.
-
 
 class Note(models.Model):
     text = models.TextField(_('Text'), max_length=1000, null=False, blank=False)
