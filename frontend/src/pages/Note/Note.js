@@ -7,7 +7,7 @@ import {
     CardActions,
     CardContent,
     CardHeader,
-    Paper,
+    Paper, TextField,
     Typography
 } from "@material-ui/core";
 import ShareIcon from '@material-ui/icons/Share';
@@ -19,10 +19,11 @@ import Button from "@material-ui/core/Button";
 import Popup from "../../components/Controls/Popup";
 import NoteForm from "./NoteForm";
 import Notification from "../../components/SnackBar/Notification";
-import {authApi} from "../../configs/configs";
+import {api, authApi} from "../../configs/configs";
 import IconButton from "@material-ui/core/IconButton";
 import {makeStyles} from "@material-ui/core/styles";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
+import {Autocomplete} from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +39,7 @@ export default function Note(props) {
     const [noteRecord, setNoteRecord] = useState(null);
     const [noteList, setNoteList] = useState([]);
     const [previousTags, setPreviousTags] = useState([]);
+    const [tagList, setTagList] = useState([]);
 
     const [notify, setNotify] = useState({
         isOpen: false,
@@ -61,9 +63,8 @@ export default function Note(props) {
     async function fetchNotes() {
 
         try {
-            await authApi.get("/api/note-list")
+            await authApi.get("/api/note-search")
                 .then((res) => {
-                    console.log(res.data)
                     setNoteList(res.data);
                 })
                 .catch((err) => {
@@ -107,23 +108,47 @@ export default function Note(props) {
                 .then((resp) => {
                     setNoteRecord(resp.data);
                 });
-                setConfirmDialog({
-                    ...confirmDialog,
-                    isOpen: false
-                });
-                setNotify({
-                    isOpen: true,
-                    message: 'Deleted Successfully',
-                    type: 'error'
+            setConfirmDialog({
+                ...confirmDialog,
+                isOpen: false
+            });
+            setNotify({
+                isOpen: true,
+                message: 'Deleted Successfully',
+                type: 'error'
+            });
+        } catch (error) {
+            setError(error);
+        }
+    };
+
+    const searchNote = async (value) => {
+        var searchNoteUrl = `/api/note-search/?tag=${value}`;
+        if(value == null){
+            searchNoteUrl = "/api/note-search/";
+        }
+        try {
+            await authApi.get(searchNoteUrl)
+                .then((resp) => {
+                    setNoteList(resp.data);
                 });
         } catch (error) {
             setError(error);
         }
     };
 
+    const tagListUrl = "/api/tag-list";
+
     // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
         fetchNotes();
+        (async () => {
+            await api.get(tagListUrl).then((res) => {
+                if (res.status === 200) {
+                    setTagList(res.data);
+                }
+            });
+        })();
     }, [noteRecord]);
 
 
@@ -172,8 +197,23 @@ export default function Note(props) {
                         display: "flex",
                     }}
                 >
-                    <div>
-
+                    <div style={{width: "30%"}}>
+                        <Autocomplete style={{width: "100%"}}
+                                      freeSolo
+                                      id="free-solo-2-demo"
+                                      options={tagList.map((option) => option.name)}
+                                      onChange={(event, value) => searchNote(value)}
+                                      renderInput={(params) => (
+                                          <TextField
+                                              {...params}
+                                              label="Search Note by Tag"
+                                              margin="normal"
+                                              variant="outlined"
+                                              fullWidth
+                                              InputProps={{ ...params.InputProps }}
+                                          />
+                                      )}
+                        />
                     </div>
                     <div>
                         <Box mx={1} display="inline-flex">

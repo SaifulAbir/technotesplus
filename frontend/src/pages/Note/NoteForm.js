@@ -54,22 +54,10 @@ const NoteForm = (props) => {
 
     const { addOrEdit, recordForEdit, previousTags } = props;
 
-    // const validationSchema = yup.object().shape({
-    //   name: yup.string()
-    //       .required("Name is required")
-    //       .test("Unique", "Name needs te be unique", (values) => {
-    //         return duplicateNameCheck(supplierList, recordForEdit, values)
-    //       }),
-    //   vat_number: yup.number().required("Vat number is required"),
-    //   corporate_address: yup.string().required("Corporate address is required"),
-    //   supplier_address: yup.string().required("Supplier address is required"),
-    // });
-
     const classes = style();
 
     const formik = useFormik({
         initialValues: initialValues,
-        // validationSchema: validationSchema,
         onSubmit: (values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
             addOrEdit(values, resetForm, setSubmitting);
