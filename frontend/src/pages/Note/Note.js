@@ -43,8 +43,9 @@ export default function Note(props) {
     const [previousTags, setPreviousTags] = useState([]);
     const [tagList, setTagList] = useState([]);
     const [userList, setUserList] = useState([]);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState('');
     const [openSharePopup, setOpenSharePopup] = React.useState(false);
+    const [expanded, setExpanded] = React.useState(false);
 
     const handleClose = () => {
         setOpenSharePopup(false);
@@ -63,11 +64,6 @@ export default function Note(props) {
     });
 
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
 
     async function fetchNotes() {
 
@@ -148,7 +144,7 @@ export default function Note(props) {
 
     var shareValues = {
         note: note,
-        shared_with: user.id,
+        shared_with: user,
     };
 
     const handleShareSubmit = async (e) => {
@@ -340,7 +336,7 @@ export default function Note(props) {
                         style={{ width: 400 }}
                         renderInput={(params) => <TextField {...params} label="Choose user" variant="outlined" />}
                         onChange={(event, value) => {
-                            setUser(value);
+                            setUser(value.id);
                         }}
                     />
                 </DialogContent>
@@ -348,7 +344,7 @@ export default function Note(props) {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button type="submit" color="primary">
+                    <Button type="submit" color="primary" disabled={user.length === 0}>
                         Share
                     </Button>
                 </DialogActions>

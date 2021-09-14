@@ -4,6 +4,7 @@ const NOTE = "/notes/";
 const PROFILE = "/profile/";
 const UPDATEPROFILE = "/update-profile/";
 const CHANGEPASSWORD = "/change-password/";
+const SHAREDNOTE = "/shared-note/";
 
 export {
   LOGIN,
@@ -11,5 +12,6 @@ export {
   NOTE,
   PROFILE,
   UPDATEPROFILE,
-  CHANGEPASSWORD
+  CHANGEPASSWORD,
+  SHAREDNOTE
 };

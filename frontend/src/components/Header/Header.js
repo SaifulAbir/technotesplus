@@ -9,6 +9,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { Link } from 'react-router-dom'
+import Button from "../Controls/Button";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
 }));
+
 
 export default function Header(props) {
   const classes = useStyles();
@@ -73,6 +75,9 @@ export default function Header(props) {
             </Typography>
 
             <div>
+              <Link to="/shared-note" style={{ textDecoration: 'none', color: 'unset' }}>
+                <Button variant="contained" color="secondary" size="medium" text='Shared Note' />
+              </Link>
               <IconButton
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
