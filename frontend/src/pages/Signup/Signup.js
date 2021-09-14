@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useFormik } from "formik";
 import { Form } from "../../components/Form/Form";
 import { api } from "../../configs/configs";
+import * as yup from "yup";
 
 
 var signupValues = {
@@ -54,12 +55,32 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
+var holdPassword = ''
+
 const Login = (props) => {
     const classes = useStyles();
     var [error, setError] = useState(null);
 
+
+    const validationSchema = yup.object().shape({
+        email: yup.string().email("Invalid email"),
+        password: yup.string().required("Password is required").test((values)=>{
+            holdPassword = values
+            return true
+        }),
+        confirmPassword: yup.string()
+            .required("Confirm Password is required")
+            .test("Match", "Password doesn't match!", (values) => {
+                if (values === holdPassword){
+                    return true
+                }
+                return false
+            }),
+    });
+
     const signupFormik = useFormik({
         initialValues: signupValues,
+        validationSchema: validationSchema,
         onSubmit: (values, { setSubmitting }) => {
             setSubmitting(true);
             signup(values);
@@ -155,6 +176,8 @@ const Login = (props) => {
                                     margin="normal"
                                     type="password"
                                     fullWidth
+                                    error={signupFormik.touched.password && Boolean(signupFormik.errors.password)}
+                                    helperText={signupFormik.touched.password && signupFormik.errors.password}
                                 />
                             </Grid>
                             <Grid item md={12} sm={12} xs={12}>
@@ -174,18 +197,20 @@ const Login = (props) => {
                                     margin="normal"
                                     type="password"
                                     fullWidth
+                                    error={signupFormik.touched.confirmPassword && Boolean(signupFormik.errors.confirmPassword)}
+                                    helperText={signupFormik.touched.confirmPassword && signupFormik.errors.confirmPassword}
                                 />
                             </Grid>
                             <Grid item md={12} sm={12} xs={12}>
                                 <div className={classes.formButtons}>
                                     <Link to="/">
-                                    <Button style={{justifyContent: 'center'}}
-                                            variant={"contained"}
-                                            size={"large"}
-                                            color={"primary"}
-                                            classes={{ root: classes.root, label: classes.label }}>
-                                        Login
-                                    </Button>
+                                        <Button style={{justifyContent: 'center'}}
+                                                variant={"contained"}
+                                                size={"large"}
+                                                color={"primary"}
+                                                classes={{ root: classes.root, label: classes.label }}>
+                                            Login
+                                        </Button>
                                     </Link>
                                     <Button style={{justifyContent: 'center'}}
                                             variant={"contained"}
@@ -193,7 +218,7 @@ const Login = (props) => {
                                             color={"primary"}
                                             type="submit"
                                             disabled={
-                                                signupFormik.isSubmitting, signupFormik.values.username.length === 0 || signupFormik.values.password.length === 0
+                                                signupFormik.isSubmitting || signupFormik.values.username.length === 0 || signupFormik.values.password.length === 0
                                                 || signupFormik.values.email.length === 0 || signupFormik.values.confirmPassword.length === 0
                                             }
                                             classes={{ root: classes.root, label: classes.label }}>

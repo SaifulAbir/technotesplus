@@ -7,7 +7,6 @@ import {convertToRaw, convertFromHTML} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { createTheme, MuiThemeProvider } from '@material-ui/core/styles'
-import {stateToHTML} from 'draft-js-export-html';
 import {
     Chip,
     Grid, TextField,

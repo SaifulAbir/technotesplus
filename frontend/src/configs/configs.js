@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const baseAPIURL = "http://127.0.0.1:8000/";
-const token = localStorage.getItem('access_token');
 
 const api = axios.create({
   baseURL: baseAPIURL,
@@ -11,13 +10,4 @@ const api = axios.create({
   },
 });
 
-const authApi = axios.create({
-  baseURL: baseAPIURL,
-  headers: {
-    "Content-Type": "application/json",
-    'Authorization':`Bearer ${token}`,
-    "Accept-Language": "*",
-  },
-});
-
-export { api, authApi };
+export { api, baseAPIURL };

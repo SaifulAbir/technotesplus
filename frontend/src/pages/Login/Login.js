@@ -153,7 +153,7 @@ const Login = (props) => {
                                             color={"primary"}
                                             type="submit"
                                             disabled={
-                                                LoginFormik.isSubmitting, LoginFormik.values.username.length === 0 || LoginFormik.values.password.length === 0
+                                                LoginFormik.isSubmitting || LoginFormik.values.username.length === 0 || LoginFormik.values.password.length === 0
                                             }
                                             classes={{ root: classes.root, label: classes.label }}>
                                         Login

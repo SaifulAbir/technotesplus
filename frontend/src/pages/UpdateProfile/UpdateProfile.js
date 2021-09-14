@@ -7,8 +7,9 @@ import {
 } from "@material-ui/core";
 import {Form} from "../../components/Form/Form";
 import Header from "../../components/Header/Header";
-import {authApi} from "../../configs/configs";
+import {baseAPIURL} from "../../configs/configs";
 import {makeStyles} from "@material-ui/core/styles";
+import axios from "axios";
 
 var initialValues = {
     id: 0,
@@ -36,10 +37,20 @@ const UpdateProfile = (props) => {
 
     const classes = useStyles();
 
+    const token = localStorage.getItem('access_token');
+    const requestOptions = {
+        baseURL: baseAPIURL,
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization':`Bearer ${token}`,
+            "Accept-Language": "*",
+        },
+    };
+
     const updateProfile = async (values) => {
 
         try {
-            await authApi.put("/api/update_profile/", values)
+            await axios.put("/api/update_profile/", values, requestOptions)
                 .then((res) => {
                     props.history.push("/profile");
                 })
@@ -62,7 +73,7 @@ const UpdateProfile = (props) => {
     const fetchProfile = async () => {
 
         try {
-            await authApi.get("/api/profile/")
+            await axios.get("/api/profile/", requestOptions)
                 .then((res) => {
                     formik.setValues({
                         ...res.data

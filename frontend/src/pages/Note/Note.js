@@ -14,17 +14,17 @@ import ShareIcon from '@material-ui/icons/Share';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Markup } from 'interweave';
-import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Popup from "../../components/Controls/Popup";
 import NoteForm from "./NoteForm";
 import Notification from "../../components/SnackBar/Notification";
-import {api, authApi} from "../../configs/configs";
+import {api, baseAPIURL} from "../../configs/configs";
 import IconButton from "@material-ui/core/IconButton";
 import {makeStyles} from "@material-ui/core/styles";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
 import {Autocomplete} from "@material-ui/lab";
 import {Form} from "../../components/Form/Form";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,10 +65,19 @@ export default function Note(props) {
 
     const classes = useStyles();
 
-    async function fetchNotes() {
+    const token = localStorage.getItem('access_token');
+    const requestOptions = {
+        baseURL: baseAPIURL,
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization':`Bearer ${token}`,
+            "Accept-Language": "*",
+        },
+    };
 
+    async function fetchNotes() {
         try {
-            await authApi.get("/api/note-search")
+            await axios.get("/api/note-search", requestOptions)
                 .then((res) => {
                     setNoteList(res.data);
                 })
@@ -83,7 +92,7 @@ export default function Note(props) {
     const postNote = async (values, setSubmitting) => {
 
         try {
-            await authApi.post("/api/create-note/", values)
+            await axios.post("/api/create-note/", values, requestOptions)
                 .then((resp) => {
                     setNoteRecord(resp.data);
                     setSubmitting(false);
@@ -96,7 +105,7 @@ export default function Note(props) {
     const updateNote = async (values, setSubmitting) => {
 
         try {
-            await authApi.put(`/api/update-note/${values.id}/`, values)
+            await axios.put(`/api/update-note/${values.id}/`, values, requestOptions)
                 .then((resp) => {
                     setNoteRecord(resp.data);
                     setSubmitting(false);
@@ -109,7 +118,7 @@ export default function Note(props) {
     const deleteNote = async (values) => {
         values.is_archived = true;
         try {
-            await authApi.put(`/api/delete-note/${values.id}/`, values)
+            await axios.put(`/api/delete-note/${values.id}/`, values, requestOptions)
                 .then((resp) => {
                     setNoteRecord(resp.data);
                 });
@@ -133,7 +142,7 @@ export default function Note(props) {
             searchNoteUrl = "/api/note-search/";
         }
         try {
-            await authApi.get(searchNoteUrl)
+            await axios.get(searchNoteUrl, requestOptions)
                 .then((resp) => {
                     setNoteList(resp.data);
                 });
@@ -150,7 +159,7 @@ export default function Note(props) {
     const handleShareSubmit = async (e) => {
         e.preventDefault();
         try {
-            await authApi.post("/api/share-note/", shareValues)
+            await axios.post("/api/share-note/", shareValues, requestOptions)
                 .then((resp) => {
                     setOpenSharePopup(false);
                     setNotify({
@@ -178,7 +187,7 @@ export default function Note(props) {
             });
         })();
         (async () => {
-            await authApi.get(userListUrl).then((res) => {
+            await axios.get(userListUrl, requestOptions).then((res) => {
                 if (res.status === 200) {
                     setUserList(res.data);
                 }
@@ -325,29 +334,29 @@ export default function Note(props) {
             <Dialog open={openSharePopup} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Share Note</DialogTitle>
                 <Form onSubmit={handleShareSubmit}>
-                <DialogContent>
-                    <DialogContentText>
-                        To share note, please select user here.
-                    </DialogContentText>
-                    <Autocomplete
-                        id="combo-box-demo"
-                        options={userList}
-                        getOptionLabel={(option) => option.username}
-                        style={{ width: 400 }}
-                        renderInput={(params) => <TextField {...params} label="Choose user" variant="outlined" />}
-                        onChange={(event, value) => {
-                            setUser(value.id);
-                        }}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button type="submit" color="primary" disabled={user.length === 0}>
-                        Share
-                    </Button>
-                </DialogActions>
+                    <DialogContent>
+                        <DialogContentText>
+                            To share note, please select user here.
+                        </DialogContentText>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={userList}
+                            getOptionLabel={(option) => option.username}
+                            style={{ width: 400 }}
+                            renderInput={(params) => <TextField {...params} label="Choose user" variant="outlined" />}
+                            onChange={(event, value) => {
+                                setUser(value.id);
+                            }}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button type="submit" color="primary" disabled={user.length === 0}>
+                            Share
+                        </Button>
+                    </DialogActions>
                 </Form>
             </Dialog>
             <Popup

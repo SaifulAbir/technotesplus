@@ -3,8 +3,9 @@ import Header from "../../components/Header/Header";
 import {Avatar, Card, CardContent, CardHeader, Paper, Typography} from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import {Markup} from "interweave";
-import {authApi} from "../../configs/configs";
+import { baseAPIURL} from "../../configs/configs";
 import {makeStyles} from "@material-ui/core/styles";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,10 +20,20 @@ function SharedNote(props) {
 
     const classes = useStyles();
 
+    const token = localStorage.getItem('access_token');
+    const requestOptions = {
+        baseURL: baseAPIURL,
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization':`Bearer ${token}`,
+            "Accept-Language": "*",
+        },
+    };
+
     async function fetchSharedNote() {
 
         try {
-            await authApi.get("/api/shared-note-list")
+            await axios.get("/api/shared-note-list", requestOptions)
                 .then((res) => {
                     setSharedNoteList(res.data);
                 })

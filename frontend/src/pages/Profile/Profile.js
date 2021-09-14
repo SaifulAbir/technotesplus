@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
@@ -14,16 +14,27 @@ import {
 } from "@material-ui/core";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 import Header from "../../components/Header/Header";
-import {authApi} from "../../configs/configs";
+import {baseAPIURL} from "../../configs/configs";
+import axios from "axios";
 
 function Profile(props) {
     var [error, setError] = useState(null);
     const [profile, setProfile] = useState({});
 
+    const token = localStorage.getItem('access_token');
+    const requestOptions = {
+        baseURL: baseAPIURL,
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization':`Bearer ${token}`,
+            "Accept-Language": "*",
+        },
+    };
+
     const fetchProfile = async () => {
 
         try {
-            await authApi.get("/api/profile/")
+            await axios.get("/api/profile/", requestOptions)
                 .then((res) => {
                     console.log(res.data);
                     setProfile(res.data)

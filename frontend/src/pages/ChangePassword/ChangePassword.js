@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Controls from "../../components/Controls/Controls";
 import { useFormik } from "formik";
 import {
@@ -7,8 +7,9 @@ import {
 } from "@material-ui/core";
 import {Form} from "../../components/Form/Form";
 import Header from "../../components/Header/Header";
-import {authApi} from "../../configs/configs";
+import {baseAPIURL} from "../../configs/configs";
 import {makeStyles} from "@material-ui/core/styles";
+import axios from "axios";
 
 var initialValues = {
     old_password: "",
@@ -38,10 +39,20 @@ const ChangePassword = (props) => {
 
     const classes = useStyles();
 
+    const token = localStorage.getItem('access_token');
+    const requestOptions = {
+        baseURL: baseAPIURL,
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization':`Bearer ${token}`,
+            "Accept-Language": "*",
+        },
+    };
+
     const changePassword = async (values) => {
 
         try {
-            await authApi.post("/api/change_password/", values)
+            await axios.post("/api/change_password/", values, requestOptions)
                 .then((res) => {
                     props.history.push("/profile");
                 })
@@ -89,8 +100,6 @@ const ChangePassword = (props) => {
                                     value={formik.values.old_password}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    // error={formik.touched.email && Boolean(formik.errors.email)}
-                                    // helperText={formik.touched.email && formik.errors.email}
                                     fullWidth
                                 />
                             </Grid>
