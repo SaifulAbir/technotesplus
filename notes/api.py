@@ -3,11 +3,16 @@ from notes.models import Note, Tag
 from notes.serializers import NoteSerializer, NoteCreateUpdateDeleteSerializer, TagSerializer
 
 
-class NoteListAPI(ListAPIView):
+class NoteSearchAPI(ListAPIView):
     serializer_class = NoteSerializer
 
     def get_queryset(self):
-        return Note.objects.prefetch_related('note_tag').filter(is_archived=False, created_by=self.request.user)
+        request = self.request
+        tag = request.GET.get('tag')
+        queryset = Note.objects.prefetch_related('note_tag').filter(is_archived=False, created_by=self.request.user)
+        if tag:
+            queryset = queryset.filter(note_tag__tag__name=tag)
+        return queryset
 
 
 class NoteCreateAPI(CreateAPIView):
