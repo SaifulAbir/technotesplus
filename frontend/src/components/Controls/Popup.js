@@ -27,7 +27,6 @@ export default function Popup(props) {
                         {title}
                     </Typography>
                     <Controls.ActionButton
-                        //color="secondary"
                         onClick={()=>{setOpenPopup(false)}}>
                         <CloseIcon style={{color: 'red'}}/>
                     </Controls.ActionButton>

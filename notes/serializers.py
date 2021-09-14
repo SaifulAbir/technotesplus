@@ -4,10 +4,10 @@ from notes.models import Note, NoteTag, Tag
 
 
 class NoteTagSerializer(ModelSerializer):
-    tag = serializers.CharField(source="tag.name")
+    name = serializers.CharField(source="tag.name")
     class Meta:
         model = NoteTag
-        fields = ('tag', )
+        fields = ('name', )
 
 
 class TagSerializer(ModelSerializer):
@@ -25,7 +25,7 @@ class NoteSerializer(ModelSerializer):
 
 
 class NoteCreateUpdateDeleteSerializer(ModelSerializer):
-    tags = serializers.ListField(child=serializers.CharField(), write_only=True)
+    tags = serializers.ListField(child=serializers.CharField(), write_only=True, required=False)
 
     class Meta:
         model = Note
