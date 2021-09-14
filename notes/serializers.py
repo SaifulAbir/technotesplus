@@ -73,3 +73,13 @@ class NoteShareSerializer(ModelSerializer):
     def create(self, validated_data):
         shared_note_instance = SharedNote.objects.create(**validated_data, shared_by=self.context['request'].user)
         return shared_note_instance
+
+
+class SharedNoteSerializer(ModelSerializer):
+    text = serializers.CharField(source="note.text")
+    note_tag = NoteTagSerializer(many=True, source='note.note_tag')
+    shared_by = serializers.CharField(source="shared_by.username")
+    class Meta:
+        model = SharedNote
+        fields = ['text', 'shared_by', 'note_tag']
+
