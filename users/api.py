@@ -1,12 +1,12 @@
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, get_object_or_404
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, get_object_or_404, ListAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_401_UNAUTHORIZED, HTTP_200_OK
 from rest_framework.utils import json
 
-from users.serializers import UserSerializer, UserUpdateSerializer
+from users.serializers import UserSerializer, UserUpdateSerializer, UserListSerializer
 
 
 class UserCreateAPI(CreateAPIView):
@@ -77,3 +77,8 @@ def change_password(request):
             }
         }
     return Response(data, HTTP_200_OK)
+
+
+class UserListAPI(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer

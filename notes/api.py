@@ -1,6 +1,6 @@
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
 from notes.models import Note, Tag
-from notes.serializers import NoteSerializer, NoteCreateUpdateDeleteSerializer, TagSerializer
+from notes.serializers import NoteSerializer, NoteCreateUpdateDeleteSerializer, TagSerializer, NoteShareSerializer
 
 
 class NoteSearchAPI(ListAPIView):
@@ -30,3 +30,7 @@ class TagListAPI(ListAPIView):
     permission_classes = ()
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+
+
+class NoteShareAPI(CreateAPIView):
+    serializer_class = NoteShareSerializer

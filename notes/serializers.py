@@ -1,6 +1,7 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from notes.models import Note, NoteTag, Tag
+from notes.models import Note, NoteTag, Tag, SharedNote
 
 
 class NoteTagSerializer(ModelSerializer):
@@ -61,3 +62,14 @@ class NoteCreateUpdateDeleteSerializer(ModelSerializer):
                                                created_by=self.context['request'].user)
             validated_data.update({"created_by": self.context['request'].user})
         return super().update(instance, validated_data)
+
+
+class NoteShareSerializer(ModelSerializer):
+
+    class Meta:
+        model = SharedNote
+        fields = ['note', 'shared_with']
+
+    def create(self, validated_data):
+        shared_note_instance = SharedNote.objects.create(**validated_data, shared_by=self.context['request'].user)
+        return shared_note_instance
