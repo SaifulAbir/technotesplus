@@ -23,5 +23,5 @@ urlpatterns = [
     path('api/', include('users.urls')),
     path('api/', include('notes.urls')),
 
-    path('docs/', include_docs_urls(title="API for the testnotesplus", permission_classes=[])),
+    path('docs/', include_docs_urls(title="API for the technotesplus", permission_classes=[])),
 ]
