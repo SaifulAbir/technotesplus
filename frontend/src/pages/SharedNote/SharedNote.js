@@ -33,7 +33,7 @@ function SharedNote(props) {
     async function fetchSharedNote() {
 
         try {
-            await axios.get("/api/shared-note-list", requestOptions)
+            await axios.get("/api/shared-note-list/", requestOptions)
                 .then((res) => {
                     setSharedNoteList(res.data);
                 })

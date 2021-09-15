@@ -78,7 +78,7 @@ const NoteForm = (props) => {
         }
     }, [recordForEdit]);
 
-    const tagListUrl = "/api/tag-list";
+    const tagListUrl = "/api/tag-list/";
 
     useEffect(() => {
         (async () => {
