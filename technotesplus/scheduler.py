@@ -1,4 +1,5 @@
 import logging
+import time
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.core.mail import send_mail
 from django_apscheduler.jobstores import DjangoJobStore, register_job
@@ -15,6 +16,7 @@ def send_notification():
     shared_note = SharedNote.objects.filter(is_viewed=False)
     for note in shared_note:
         try:
+            time.sleep(3)
             send_mail(
                 'A new note is shared with you by '+note.shared_by.username,
                 'Please read it from tech notes plus',
