@@ -16,7 +16,7 @@ def send_notification():
     shared_note = SharedNote.objects.filter(is_viewed=False)
     for note in shared_note:
         try:
-            time.sleep(3)
+            time.sleep(2)
             send_mail(
                 'A new note is shared with you by '+note.shared_by.username,
                 'Please read it from tech notes plus',
@@ -27,4 +27,7 @@ def send_notification():
         except Exception as e:
             logger.error(e)
 
-scheduler.start()
+try:
+    scheduler.start()
+except Exception as e:
+    logger.error(e)
