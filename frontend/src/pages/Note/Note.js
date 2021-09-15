@@ -77,7 +77,7 @@ export default function Note(props) {
 
     async function fetchNotes() {
         try {
-            await axios.get("/api/note-search", requestOptions)
+            await axios.get("/api/note-search/", requestOptions)
                 .then((res) => {
                     setNoteList(res.data);
                 })
@@ -173,8 +173,8 @@ export default function Note(props) {
         }
     };
 
-    const tagListUrl = "/api/tag-list";
-    const userListUrl = "/api/user-list";
+    const tagListUrl = "/api/tag-list/";
+    const userListUrl = "/api/user-list/";
 
     // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
