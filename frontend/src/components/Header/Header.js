@@ -104,11 +104,10 @@ export default function Header(props) {
               >
                 <MenuItem onClick={() => profile(props.history)}>Profile</MenuItem>
                 <MenuItem onClick={() => changePassword(props.history)}>Change Password</MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={() => signOut(props.history)}>
                   <Typography
                       className={classes.profileMenuLink}
                       color="primary"
-                      onClick={() => signOut(props.history)}
                   >
                     Sign Out
                   </Typography>

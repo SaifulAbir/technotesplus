@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import {
     Grid,
     Typography,
@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 
 var holdPassword = ''
 
-const Login = (props) => {
+const Signup = (props) => {
     const classes = useStyles();
     var [error, setError] = useState(null);
 
@@ -77,6 +77,7 @@ const Login = (props) => {
                 return false
             }),
     });
+
 
     const signupFormik = useFormik({
         initialValues: signupValues,
@@ -101,6 +102,10 @@ const Login = (props) => {
             setError(true);
         }
     };
+
+    if (localStorage.getItem("access_token") !== null) {
+        return <Redirect to={{ pathname: "/notes" }} />;
+    }
 
     return (
         <Grid container className={classes.container}>
@@ -234,4 +239,4 @@ const Login = (props) => {
     );
 };
 
-export default Login;
+export default Signup;

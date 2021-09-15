@@ -10,6 +10,8 @@ import Header from "../../components/Header/Header";
 import {baseAPIURL} from "../../configs/configs";
 import {makeStyles} from "@material-ui/core/styles";
 import axios from "axios";
+import * as yup from "yup";
+import * as Yup from "yup";
 
 var initialValues = {
     old_password: "",
@@ -19,12 +21,9 @@ var initialValues = {
 
 const useStyles = makeStyles(theme => ({
     container: {
-        height: "100vh",
-        width: "100vw",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        position: "absolute",
         top: 0,
         left: 0,
     },
@@ -33,6 +32,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
+var holdPassword = '';
 
 const ChangePassword = (props) => {
     var [error, setError] = useState(null);
@@ -64,8 +64,25 @@ const ChangePassword = (props) => {
         }
     };
 
+    const validationSchema = yup.object().shape({
+        old_password: yup.string().required('Old Password is required'),
+        new_password: yup.string().required("New Password is required").test((values)=>{
+            holdPassword = values
+            return true
+        }),
+        confirm_password: yup.string()
+            .required("Confirm Password is required")
+            .test("Match", "Password doesn't match!", (values) => {
+                if (values === holdPassword){
+                    return true
+                }
+                return false
+            }),
+    });
+
     const formik = useFormik({
         initialValues: initialValues,
+        validationSchema: validationSchema,
         onSubmit: (values, { setSubmitting }) => {
             setSubmitting(true);
             changePassword(values);
@@ -86,7 +103,7 @@ const ChangePassword = (props) => {
                 >
                     <Fade in={error}>
                         <Typography color="secondary" className={classes.errorMessage}>
-                            Password doesn't match!!!
+                            Old password is not correct!!!
                         </Typography>
                     </Fade>
                     <Form onSubmit={formik.handleSubmit}>
@@ -101,6 +118,8 @@ const ChangePassword = (props) => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     fullWidth
+                                    error={formik.touched.old_password && Boolean(formik.errors.old_password)}
+                                    helperText={formik.touched.old_password && formik.errors.old_password}
                                 />
                             </Grid>
                             <Grid item md={6} sm={12} xs={12}>
@@ -112,6 +131,8 @@ const ChangePassword = (props) => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     fullWidth
+                                    error={formik.touched.new_password && Boolean(formik.errors.new_password)}
+                                    helperText={formik.touched.new_password && formik.errors.new_password}
                                 />
                             </Grid>
                             <Grid item md={6}>
@@ -122,6 +143,8 @@ const ChangePassword = (props) => {
                                     value={formik.values.confirm_password}
                                     onChange={formik.handleChange}
                                     fullWidth
+                                    error={formik.touched.confirm_password && Boolean(formik.errors.confirm_password)}
+                                    helperText={formik.touched.confirm_password && formik.errors.confirm_password}
                                 />
                             </Grid>
                             <Grid item md={12} style={{ marginTop: 16 }}>

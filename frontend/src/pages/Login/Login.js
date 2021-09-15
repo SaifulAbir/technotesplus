@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useFormik } from "formik";
 import { Form } from "../../components/Form/Form";
 import { api } from "../../configs/configs";
+import { Redirect } from 'react-router-dom';
 
 
 var loginValues = {
@@ -79,6 +80,10 @@ const Login = (props) => {
             setError(true);
         }
     };
+
+    if (localStorage.getItem("access_token") !== null) {
+        return <Redirect to={{ pathname: "/notes" }} />;
+    }
 
     return (
         <Grid container className={classes.container}>

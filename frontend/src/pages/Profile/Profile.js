@@ -36,7 +36,6 @@ function Profile(props) {
         try {
             await axios.get("/api/profile/", requestOptions)
                 .then((res) => {
-                    console.log(res.data);
                     setProfile(res.data)
                 })
                 .catch((err) => {
