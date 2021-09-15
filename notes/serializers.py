@@ -32,7 +32,10 @@ class NoteCreateUpdateDeleteSerializer(ModelSerializer):
         fields = ['text', 'tags', 'is_archived']
 
     def create(self, validated_data):
-        tags = validated_data.pop('tags')
+        try:
+            tags = validated_data.pop('tags')
+        except KeyError:
+            tags = None
         note_instance = Note.objects.create(**validated_data, created_by=self.context['request'].user)
         if tags:
             for tag in tags:

@@ -285,8 +285,8 @@ export default function Note(props) {
                                             <EditIcon />
                                         </Avatar>
                                     }
-                                    title={note.created_by}
-                                    subheader={note.created_at}
+                                    title="Note"
+                                    subheader={"Taken by: " + note.created_by}
                                 />
                                 <CardContent>
                                     <Typography variant="body2" color="textSecondary" component="p">
