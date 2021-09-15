@@ -10,7 +10,7 @@ scheduler = BackgroundScheduler()
 scheduler.add_jobstore(DjangoJobStore(), "default")
 
 
-@register_job(scheduler, "interval", minutes=10, id='send_notification', replace_existing=True)
+@register_job(scheduler, "interval", minutes=5, id='send_notification', replace_existing=True)
 def send_notification():
     shared_note = SharedNote.objects.filter(is_viewed=False)
     for note in shared_note:
