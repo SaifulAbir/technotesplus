@@ -49,7 +49,7 @@ const ChangePassword = (props) => {
         },
     };
 
-    const changePassword = async (values) => {
+    const changePassword = async (values, setSubmitting) => {
 
         try {
             await axios.post("/api/change_password/", values, requestOptions)
@@ -58,9 +58,11 @@ const ChangePassword = (props) => {
                 })
                 .catch((err) => {
                     setError(true);
+                    setSubmitting(false);
                 });
         } catch (error) {
             setError(true);
+            setSubmitting(false);
         }
     };
 
@@ -85,7 +87,7 @@ const ChangePassword = (props) => {
         validationSchema: validationSchema,
         onSubmit: (values, { setSubmitting }) => {
             setSubmitting(true);
-            changePassword(values);
+            changePassword(values, setSubmitting);
         },
     });
 

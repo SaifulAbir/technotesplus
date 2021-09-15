@@ -84,11 +84,11 @@ const Signup = (props) => {
         validationSchema: validationSchema,
         onSubmit: (values, { setSubmitting }) => {
             setSubmitting(true);
-            signup(values);
+            signup(values, setSubmitting);
         },
     });
 
-    const signup = async (values) => {
+    const signup = async (values, setSubmitting) => {
 
         try {
             await api.post("/api/signup/", values)
@@ -97,9 +97,11 @@ const Signup = (props) => {
                 })
                 .catch((err) => {
                     setError(true);
+                    setSubmitting(false);
                 });
         } catch (error) {
             setError(true);
+            setSubmitting(false);
         }
     };
 

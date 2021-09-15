@@ -44,7 +44,7 @@ function UpdateProfile(props) {
         },
     };
 
-    const updateProfile = async (values) => {
+    const updateProfile = async (values, setSubmitting) => {
 
         try {
             await axios.put("/api/update_profile/", values, requestOptions)
@@ -53,9 +53,11 @@ function UpdateProfile(props) {
                 })
                 .catch((err) => {
                     setError(true);
+                    setSubmitting(false);
                 });
         } catch (error) {
             setError(true);
+            setSubmitting(false);
         }
     };
 
@@ -63,7 +65,7 @@ function UpdateProfile(props) {
         initialValues: initialValues,
         onSubmit: (values, { setSubmitting }) => {
             setSubmitting(true);
-            updateProfile(values);
+            updateProfile(values, setSubmitting);
         },
     });
 

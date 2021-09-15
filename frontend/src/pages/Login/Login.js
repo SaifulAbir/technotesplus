@@ -61,11 +61,11 @@ const Login = (props) => {
         initialValues: loginValues,
         onSubmit: (values, { setSubmitting }) => {
             setSubmitting(true);
-            login(values);
+            login(values, setSubmitting);
         },
     });
 
-    const login = async (values) => {
+    const login = async (values, setSubmitting) => {
 
         try {
             await api.post("/api/token/", values)
@@ -75,9 +75,11 @@ const Login = (props) => {
                 })
                 .catch((err) => {
                     setError(true);
+                    setSubmitting(false);
                 });
         } catch (error) {
             setError(true);
+            setSubmitting(false);
         }
     };
 
