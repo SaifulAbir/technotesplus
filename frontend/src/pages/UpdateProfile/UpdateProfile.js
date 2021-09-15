@@ -47,7 +47,7 @@ function UpdateProfile(props) {
     const updateProfile = async (values, setSubmitting) => {
 
         try {
-            await axios.put("/api/update_profile/", values, requestOptions)
+            await axios.put("/api/update-profile/", values, requestOptions)
                 .then((res) => {
                     props.history.push("/profile");
                 })

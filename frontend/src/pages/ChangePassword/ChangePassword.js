@@ -52,7 +52,7 @@ const ChangePassword = (props) => {
     const changePassword = async (values, setSubmitting) => {
 
         try {
-            await axios.post("/api/change_password/", values, requestOptions)
+            await axios.post("/api/change-password/", values, requestOptions)
                 .then((res) => {
                     props.history.push("/profile");
                 })
