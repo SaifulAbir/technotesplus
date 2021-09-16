@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Note(models.Model):
-    text = models.TextField(_('Text'), max_length=1000, null=False, blank=False)
+    text = models.TextField(_('Text'), null=False, blank=False)
     is_archived = models.BooleanField(_('Archived'), null=True, blank=True, default=False)
     created_by = models.ForeignKey(
             User,
